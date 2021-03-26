@@ -24,9 +24,6 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.path('email').validate(value => {
-  return /^[\w-.]+@(\b[a-z-]+\b)[^-].[a-z]{2,10}$/g.test(value);
-}, 'Enter correct email address');
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
