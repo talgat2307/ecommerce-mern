@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Box, Container, Menu, MenuItem } from '@material-ui/core';
+import { Badge, Box, Container, Menu, MenuItem } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PersonIcon from '@material-ui/icons/Person';
 import { Link } from 'react-router-dom';
@@ -41,7 +41,7 @@ const Header = () => {
 
   const dispatch = useDispatch();
   const { userInfo} = useSelector(state => state.userLogin);
-
+  const { cartItems } = useSelector(state => state.cart);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -71,7 +71,9 @@ const Header = () => {
               className={classes.headerBtn}
               color="inherit"
               startIcon={
-                <ShoppingCartIcon/>
+                <Badge badgeContent={cartItems.reduce((acc, item) => acc + item.qty, 0)} color="secondary">
+                  <ShoppingCartIcon/>
+                </Badge>
               }
               component={Link}
               to={'/cart'}
