@@ -6,6 +6,7 @@ import { Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
 import Products from './containers/Products';
 import ProductDetails from './containers/ProductDetails';
+import Cart from './containers/Cart';
 
 const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
   return isAllowed ? <Route {...props}/> : <Redirect to={redirectTo}/>;
@@ -22,6 +23,7 @@ const App = () => {
           <ProtectedRoute path={'/register'} component={Register} isAllowed={!user} redirectTo={'/'}/>
           <Route path={'/login'} component={Login}/>
           <Route path={'/product/:id'} component={ProductDetails}/>
+          <Route path={'/cart/:id?'} component={Cart}/>
         </Switch>
       </Layout>
     </>
