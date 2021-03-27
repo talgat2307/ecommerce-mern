@@ -4,6 +4,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunkMiddleware from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import { productDetailsReducer, productListReducer } from './reducers/productReducers';
+import { cartReducers } from './reducers/cartReducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -14,14 +15,23 @@ const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  cart: cartReducers,
   router: connectRouter(history),
 });
 
-const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(
-  localStorage.getItem('userInfo')) : null;
+const userInfoFromStorage = localStorage.getItem('userInfo') ?
+  JSON.parse(localStorage.getItem('userInfo')) : null;
+const cartItemsFromStorage = localStorage.getItem('cartItems') ?
+  JSON.parse(localStorage.getItem('cartItems')) : [];
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ?
+  JSON.parse(localStorage.getItem('shippingAddress')) : {};
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    shippingAddress: shippingAddressFromStorage
+  },
 };
 
 const middleware = [
