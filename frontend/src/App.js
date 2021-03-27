@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import Products from './containers/Products';
 import ProductDetails from './containers/ProductDetails';
 import Cart from './containers/Cart';
+import Shipping from './containers/Shipping';
+import Payment from './containers/Payment';
 
 const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
   return isAllowed ? <Route {...props}/> : <Redirect to={redirectTo}/>;
@@ -24,6 +26,8 @@ const App = () => {
           <Route path={'/login'} component={Login}/>
           <Route path={'/product/:id'} component={ProductDetails}/>
           <Route path={'/cart/:id?'} component={Cart}/>
+          <ProtectedRoute path={'/shipping'} component={Shipping} isAllowed={user} redirectTo={'/login'}/>
+          <Route path={'/payment'} component={Payment}/>
         </Switch>
       </Layout>
     </>
