@@ -13,7 +13,7 @@ const orderSchema = new Schema({
         qty: { type: Number, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        product: {
+        id: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
           required: true,
@@ -23,7 +23,6 @@ const orderSchema = new Schema({
       address: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
-      country: { type: String, required: true },
     },
     paymentMethod: {
       type: String,

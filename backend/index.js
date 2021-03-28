@@ -5,6 +5,7 @@ const colors = require('colors');
 const connectDB = require('./config/db');
 const users = require('./app/users');
 const products = require('./app/products');
+const orders = require('./app/orders');
 
 dotenv.config();
 const app = express();
@@ -17,5 +18,6 @@ connectDB();
 
 app.use('/users', users);
 app.use('/products', products);
+app.use('/orders', orders);
 
 app.listen(8000, () => console.log('Server started'.yellow.inverse));
