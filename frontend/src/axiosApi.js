@@ -7,7 +7,7 @@ const axiosApi = axios.create({
 
 axiosApi.interceptors.request.use(config => {
   try {
-    config.headers['Authorization'] = store.getState().userLogin.userInfo.token;
+    config.headers['Authorization'] = `Bearer ${store.getState().userLogin.userInfo.token}`;
   } catch (e) {}
   return config;
 })
