@@ -1,12 +1,13 @@
 import {
   CART_ADD_ITEM,
-  CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD,
+  CART_REMOVE_ITEM, CART_RESET_ITEMS, CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from '../constants/cartConstants';
 import axiosApi from '../../axiosApi';
 
 const cartAddItem = (productItem, qty) => ({ type: CART_ADD_ITEM, productItem, qty });
 const cartRemoveItem = id => ({ type: CART_REMOVE_ITEM, id });
+const cartResetItems = () => ({ type: CART_RESET_ITEMS });
 const cartSaveShippingAddress = data => ({ type: CART_SAVE_SHIPPING_ADDRESS, data });
 const cartSavePaymentMethod = data => ({ type: CART_SAVE_PAYMENT_METHOD, data });
 
@@ -21,6 +22,14 @@ export const addToCart = (id, qty) => {
 export const removeFromCart = (id) => {
   return (dispatch, getState) => {
     dispatch(cartRemoveItem(id));
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+  };
+};
+
+
+export const resetCartItems = () => {
+  return (dispatch, getState) => {
+    dispatch(cartResetItems());
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
   };
 };
