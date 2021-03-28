@@ -5,6 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import { productDetailsReducer, productListReducer } from './reducers/productReducers';
 import { cartReducers } from './reducers/cartReducers';
+import { orderCreateReducer, orderDetailsReducer, orderListReducer } from './reducers/orderReducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -16,6 +17,9 @@ const rootReducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducers,
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
+  orderList: orderListReducer,
   router: connectRouter(history),
 });
 
