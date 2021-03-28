@@ -89,7 +89,7 @@ const ProductDetails = ({ match, history }) => {
         <Loader open={loading}/>
         :
         <Grid container className={classes.gridCon}>
-          <Grid item md={6}>
+          <Grid item md={5}>
             <Box>
               <img className={classes.media} src={product.image} alt={product.name} width={'100%'}/>
             </Box>
