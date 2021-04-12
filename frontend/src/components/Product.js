@@ -11,6 +11,7 @@ import Ratings from './Ratings';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { imageUrl } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -63,7 +64,7 @@ const Product = ({ product, onClick }) => {
             component="img"
             onClick={onClick}
             className={classes.media}
-            image={product.image}
+            image={product.image.includes('image') ? product.image : imageUrl + product.image}
           />
           <Typography className={classes.name} variant='subtitle1' component="h2">
             <Link className={classes.link} to={`/product/${product._id}`}>

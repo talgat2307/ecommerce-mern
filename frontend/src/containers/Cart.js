@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Link } from 'react-router-dom';
+import { imageUrl } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   mainGridCon: {
@@ -92,7 +93,7 @@ const Cart = ({ match, location, history }) => {
             <Alert className={classes.alert} severity={'info'}>Your cart is empty</Alert>
             <Button
               className={classes.backBtn}
-              variant='outlined'
+              variant="outlined"
               color={'primary'}
               component={Link}
               to={'/'}
@@ -105,9 +106,11 @@ const Cart = ({ match, location, history }) => {
             <List className={classes.list}>
               {cartItems.map(product => (
                 <ListItem key={product.id} className={classes.listItem}>
-                  <Grid container >
+                  <Grid container>
                     <Grid item md={2} className={classes.gridItem}>
-                        <img className={classes.img} src={product.image} alt={product.name} width={80}/>
+                      <img className={classes.img}
+                           src={product.image.includes('image') ? product.image : imageUrl + product.image}
+                           alt={product.name} width={80}/>
                     </Grid>
                     <Grid item md={3} className={classes.gridItem}>
                       <Typography variant={'body1'}>

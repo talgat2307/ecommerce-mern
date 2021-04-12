@@ -16,6 +16,7 @@ import { createOrder } from '../store/actions/orderActions';
 import { ORDER_CREATE_RESET } from '../store/constants/orderConstants';
 import { USER_DETAILS_RESET } from '../store/constants/userConstants';
 import { resetCartItems } from '../store/actions/cartActions';
+import { imageUrl } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   gridCon: {
@@ -153,7 +154,7 @@ const PlaceOrder = ({ history }) => {
                     <div>
                       <img
                         className={classes.img}
-                        src={item.image}
+                        src={item.image.includes('image') ? item.image : imageUrl + item.image}
                         alt={item.name}
                         width={50}
                       />

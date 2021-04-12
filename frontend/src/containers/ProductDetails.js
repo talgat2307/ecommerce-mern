@@ -14,6 +14,7 @@ import Ratings from '../components/Ratings';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import { getProductDetails } from '../store/actions/productActions';
+import { imageUrl } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   li: {
     borderBottom: '1px solid #e9ecef',
     marginBottom: '10px',
-    padding: theme.spacing(1, 0)
+    padding: theme.spacing(1, 0),
   },
   cartBox: {
     border: '1px solid #dee2e6',
@@ -79,10 +80,15 @@ const ProductDetails = ({ match, history }) => {
     history.push(`/cart/${productId}?qty=${qty}`);
   };
 
+  let localImages;
+  if (product.image) {
+    localImages = product.image.includes('image');
+  }
+
   const classes = useStyles();
   return (
     <>
-      <Button variant='outlined' component={Link} to={'/'}>
+      <Button variant="outlined" component={Link} to={'/'}>
         Go Back
       </Button>
       {loading ?
@@ -91,7 +97,10 @@ const ProductDetails = ({ match, history }) => {
         <Grid container className={classes.gridCon}>
           <Grid item md={5}>
             <Box>
-              <img className={classes.media} src={product.image} alt={product.name} width={'100%'}/>
+              <img className={classes.media}
+                   src={localImages === false ? imageUrl + product.image : product.image}
+                   alt={product.name}
+                   width={'100%'}/>
             </Box>
           </Grid>
           <Grid item md={4}>

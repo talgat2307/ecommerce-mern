@@ -122,22 +122,10 @@ const Header = () => {
                     <Box>
                       <MenuItem
                         component={Link}
-                        to={'/admin/user-list'}
+                        to={'/admin'}
                         className={classes.menuItem}
                         onClick={handleClose}
-                      >Users</MenuItem>
-                      <MenuItem
-                        component={Link}
-                        to={'/admin/product-list'}
-                        className={classes.menuItem}
-                        onClick={handleClose}
-                      >Products</MenuItem>
-                      <MenuItem
-                        component={Link}
-                        to={'/admin/order-list'}
-                        className={classes.menuItem}
-                        onClick={handleClose}
-                      >Orders</MenuItem>
+                      >Admin Dashboard</MenuItem>
                       <MenuItem
                         className={classes.menuItem}
                         onClick={() => {
