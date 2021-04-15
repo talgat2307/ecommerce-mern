@@ -6,6 +6,7 @@ import ProductList from './Products/ProductList';
 import UserEdit from './Users/UserEdit';
 import ProductCreate from './Products/ProductCreate';
 import ProductEdit from './Products/ProductEdit';
+import OrderList from './Orders/OrderList';
 
 const AdminDashboardRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AdminDashboardRoutes = () => {
           <Route path={'/admin/product-list'} component={ProductList}/>
           <Route path={'/admin/product-create'} component={ProductCreate}/>
           <Route path={'/admin/product/:id/edit'} component={ProductEdit}/>
+          <Route path={'/admin/order-list'} component={OrderList}/>
          </Switch>
       </AdminLayout>
     </>
