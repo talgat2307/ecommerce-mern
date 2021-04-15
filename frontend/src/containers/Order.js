@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import {
-  Box,
+  Box, Button,
   Card, Divider,
   List,
   ListItem,
@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
-import { getOrderDetails } from '../store/actions/orderActions';
+import { deliverOrder, getOrderDetails } from '../store/actions/orderActions';
+import { ORDER_DELIVER_RESET } from '../store/constants/orderConstants';
 
 const useStyles = makeStyles((theme) => ({
   gridCon: {
@@ -81,34 +82,44 @@ const Order = ({ match }) => {
   const dispatch = useDispatch();
   const orderId = match.params.id;
 
+  const { userInfo } = useSelector(state => state.userLogin);
   const { order, loading, error } = useSelector(state => state.orderDetails);
+  const { success } = useSelector(state => state.orderDeliver);
 
   if (order) {
     order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0);
   }
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId));
-  }, [dispatch, orderId]);
+    if (success) {
+      dispatch({ type: ORDER_DELIVER_RESET });
+    } else {
+      dispatch(getOrderDetails(orderId));
+    }
+  }, [dispatch, orderId, success]);
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order._id));
+  };
 
   const classes = useStyles();
   return (
     <>
       {loading ? <Loader open={loading}/> : error ? <Alert severity={'error'}>{error.error}</Alert> :
         <>
-          <Typography variant='h4'>Order {order._id}</Typography>
+          <Typography variant="h4">Order {order._id}</Typography>
           <Grid container className={classes.gridCon}>
             <Grid item md={7}>
               <List>
                 <ListItem className={classes.listItem}>
-                  <Typography className={classes.title} variant='h5'>Shipping</Typography>
-                  <Typography variant='subtitle1'>
+                  <Typography className={classes.title} variant="h5">Shipping</Typography>
+                  <Typography variant="subtitle1">
                     <strong>Name: </strong> {order.user.name}
                   </Typography>
-                  <Typography variant='subtitle1'>
+                  <Typography variant="subtitle1">
                     <strong>Email: </strong> <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
                   </Typography>
-                  <Typography variant='body1'>
+                  <Typography variant="body1">
                     <strong>Address: </strong>
                     {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
                     {order.shippingAddress.postalCode},{' '} {order.shippingAddress.country}
@@ -118,9 +129,9 @@ const Order = ({ match }) => {
                   {order.isDelivered ? <Alert severity={'success'}>Delivered on {order.deliveredAt}</Alert> :
                     <Alert severity={'info'}>Not delivered</Alert>}
                 </Box>
-                <Divider variant='fullWidth' component="li"/>
+                <Divider variant="fullWidth" component="li"/>
                 <ListItem className={classes.listItem}>
-                  <Typography className={classes.title} variant='h5'>Payment</Typography>
+                  <Typography className={classes.title} variant="h5">Payment</Typography>
                   <Typography>
                     <strong>Method: </strong>{order.paymentMethod}
                   </Typography>
@@ -129,9 +140,9 @@ const Order = ({ match }) => {
                   {order.isPaid ? <Alert severity={'success'}>Paid on {order.paidAt}</Alert> :
                     <Alert severity={'info'}>Not Paid</Alert>}
                 </Box>
-                <Divider variant='fullWidth' component="li"/>
+                <Divider variant="fullWidth" component="li"/>
                 <ListItem className={classes.listItem}>
-                  <Typography className={classes.title} variant='h5'>Order Items</Typography>
+                  <Typography className={classes.title} variant="h5">Order Items</Typography>
                   <List className={classes.orderList}>
                     {order.orderItems.map((item, index) => (
                       <ListItem key={index} className={classes.orderListItems}>
@@ -179,6 +190,18 @@ const Order = ({ match }) => {
                     <Typography>Total</Typography>
                     <Typography>${order.totalPrice}</Typography>
                   </ListItem>
+                  {userInfo && userInfo.role === 'admin' &&
+                  <ListItem>
+                    <Button
+                      variant={'contained'}
+                      color={'primary'}
+                      onClick={deliverHandler}
+                      fullWidth
+                      disabled={order.isDelivered}
+                    >
+                      Mark as Delivered
+                    </Button>
+                  </ListItem>}
                 </List>
               </Card>
             </Grid>

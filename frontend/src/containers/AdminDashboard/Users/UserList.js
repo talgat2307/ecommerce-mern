@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Loader from '../../../components/Loader';
 import { Alert } from '@material-ui/lab';
@@ -10,7 +10,8 @@ import { deleteUser, getUserList } from '../../../store/actions/userActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { DataGrid } from '@material-ui/data-grid';
-import { Typography } from '@material-ui/core';
+import { IconButton, Snackbar, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   tableCon: {
@@ -24,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 const UserList = () => {
 
+  const [open, setOpen] = useState(false);
+
   const dispatch = useDispatch();
   const userList = useSelector(state => state.userList);
   const { loading, error, deleteError, users } = userList;
@@ -34,7 +37,13 @@ const UserList = () => {
 
   const userDeleteHandler = (id) => {
     dispatch(deleteUser(id));
+    setOpen(true);
   };
+
+  const handleClose = (event, reason) => {
+    setOpen(false);
+  };
+
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -97,6 +106,23 @@ const UserList = () => {
           }))}
         />
       )}
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message="User has been deleted"
+        action={
+          <>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
     </Container>
   );
 };

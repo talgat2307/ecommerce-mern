@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Loader from '../../../components/Loader';
@@ -13,6 +13,8 @@ import { DataGrid } from '@material-ui/data-grid';
 import {
   deleteProduct, getProductList,
 } from '../../../store/actions/productActions';
+import { IconButton, Snackbar } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -26,9 +28,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 750,
     border: '1px solid #00000',
   },
+  alert: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const ProductList = () => {
+
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector(state => state.productList);
@@ -39,6 +46,11 @@ const ProductList = () => {
 
   const productDeleteHandler = (id) => {
     dispatch(deleteProduct(id));
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    setOpen(false);
   };
 
   const columns = [
@@ -95,18 +107,41 @@ const ProductList = () => {
           + Create Product
         </Button>
       </div>
-      {loading ? <Loader open={loading}/> : error ? <Alert severity={'error'}>{error}</Alert> : (
-        <DataGrid
-          className={classes.tableCon}
-          pageSize={8}
-          autoHeight
-          rows={rows}
-          columns={columns.map(column => ({
-            ...column,
-            disableClickEventBubbling: true,
-          }))}
-        />
-      )}
+      {loading ? <Loader open={loading}/>
+        :
+        error ? <Alert className={classes.alert} severity={'error'}>{error.error}</Alert>
+          :
+          products && products.length === 0 ? <Alert className={classes.alert} severity={'info'}>No products added yet</Alert>
+            :
+            (
+              <DataGrid
+                className={classes.tableCon}
+                pageSize={8}
+                autoHeight
+                rows={rows}
+                columns={columns.map(column => ({
+                  ...column,
+                  disableClickEventBubbling: true,
+                }))}
+              />
+            )}
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message="Product has been deleted"
+        action={
+          <>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
     </Container>
   );
 };

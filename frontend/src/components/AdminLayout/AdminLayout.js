@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: '#e5e5e5',
     },
+    '&:focus': {
+      color: '#f48c06',
+    }
   },
 }));
 

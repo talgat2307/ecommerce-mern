@@ -2,10 +2,25 @@ import { createBrowserHistory } from 'history';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunkMiddleware from 'redux-thunk';
-import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
-import { productDetailsReducer, productListReducer } from './reducers/productReducers';
+import {
+  userDetailsReducer, userListReducer,
+  userLoginReducer, userProfileReducer,
+  userRegisterReducer,
+  userUpdateProfileReducer, userUpdateReducer,
+} from './reducers/userReducers';
+import {
+  productCreateReducer,
+  productDetailsReducer,
+  productListReducer,
+  productUpdateReducer,
+} from './reducers/productReducers';
 import { cartReducers } from './reducers/cartReducers';
-import { orderCreateReducer, orderDetailsReducer, orderListReducer } from './reducers/orderReducers';
+import {
+  orderCreateReducer, orderDeliverReducer,
+  orderDetailsReducer,
+  orderListReducer,
+  orderListUserReducer,
+} from './reducers/orderReducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -14,12 +29,21 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userProfile: userProfileReducer,
+  userUpdateProfile: userUpdateProfileReducer,
+  userList: userListReducer,
+  userDetails: userDetailsReducer,
+  userUpdate: userUpdateReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   cart: cartReducers,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderListUser: orderListUserReducer,
   orderList: orderListReducer,
+  orderDeliver: orderDeliverReducer,
   router: connectRouter(history),
 });
 

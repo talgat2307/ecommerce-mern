@@ -11,6 +11,8 @@ import Shipping from './containers/Shipping';
 import Payment from './containers/Payment';
 import PlaceOrder from './containers/PlaceOrder';
 import Order from './containers/Order';
+import UserProfile from './containers/UserProfile';
+import AdminDashboardRoutes from './containers/AdminDashboard/AdminDashboardRoutes';
 
 const ProtectedRoute = ({ isAllowed, redirectTo, ...props }) => {
   return isAllowed ? <Route {...props}/> : <Redirect to={redirectTo}/>;
@@ -32,6 +34,8 @@ const App = () => {
           <Route path={'/payment'} component={Payment}/>
           <ProtectedRoute path={'/place-order'} component={PlaceOrder} isAllowed={user} redirectTo={'/login'}/>
           <ProtectedRoute path={'/order/:id'} component={Order} isAllowed={user} redirectTo={'/login'}/>
+          <Route path={'/profile'} component={UserProfile}/>
+          <Route path={'/admin'} component={AdminDashboardRoutes}/>
         </Switch>
       </Layout>
     </>
