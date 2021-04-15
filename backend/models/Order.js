@@ -61,6 +61,9 @@ const orderSchema = new Schema({
       type: Date,
     },
   },
+  {
+    timestamps: true,
+  },
 );
 
 const Order = mongoose.model('Order', orderSchema);

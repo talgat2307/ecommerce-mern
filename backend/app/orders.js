@@ -1,6 +1,34 @@
 const router = require('express').Router();
 const Order = require('../models/Order');
-const auth = require('../middleware/auth');
+const auth = require('../middlewares/auth');
+const permit = require('../middlewares/permit');
+
+router.get('/', [auth], async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id });
+    res.send(orders);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+router.get('/list', [auth, permit('admin')], async (req, res) => {
+  try {
+    const orders = await Order.find().populate('user', 'id name');
+    res.send(orders);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+router.get('/:id', [auth], async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate('user', 'name email');
+    res.send(order);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
 
 router.post('/', [auth], async (req, res) => {
     try {
@@ -26,19 +54,17 @@ router.post('/', [auth], async (req, res) => {
   },
 );
 
-router.get('/:id', [auth], async (req, res) => {
+router.put('/:id/deliver', [auth, permit('admin')], async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate('user', 'name email');
-    res.send(order);
-  } catch (e) {
-    res.status(404).send(e);
-  }
-});
+    const order = await Order.findById(req.params.id);
 
-router.get('/', [auth], async (req, res) => {
-  try {
-    const orders = await Order.find({ user: req.user._id });
-    res.send(orders);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+    }
+
+    const updatedOrder = await order.save();
+    res.send(updatedOrder);
   } catch (e) {
     res.status(404).send(e);
   }
