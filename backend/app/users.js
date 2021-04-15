@@ -2,8 +2,8 @@ const router = require('express').Router();
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const validator = require('email-validator');
-const auth = require('../middleware/auth');
-const permit = require('../middleware/permit');
+const auth = require('../middlewares/auth');
+const permit = require('../middlewares/permit');
 
 router.post('/', async (req, res) => {
   try {

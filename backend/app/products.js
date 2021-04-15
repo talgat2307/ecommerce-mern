@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const Product = require('../models/Product');
-const auth = require('../middleware/auth');
-const permit = require('../middleware/permit');
-const upload = require('../middleware/upload');
+const auth = require('../middlewares/auth');
+const permit = require('../middlewares/permit');
+const upload = require('../middlewares/upload');
 
 router.get('/', async (req, res) => {
   try {
