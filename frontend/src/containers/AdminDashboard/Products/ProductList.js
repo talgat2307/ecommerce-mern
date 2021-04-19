@@ -49,7 +49,7 @@ const ProductList = () => {
     setOpen(true);
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = () => {
     setOpen(false);
   };
 
