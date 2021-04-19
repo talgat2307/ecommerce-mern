@@ -11,7 +11,7 @@ import {
 import {
   productCreateReducer,
   productDetailsReducer,
-  productListReducer,
+  productListReducer, productReviewReducer,
   productUpdateReducer,
 } from './reducers/productReducers';
 import { cartReducers } from './reducers/cartReducers';
@@ -38,6 +38,7 @@ const rootReducer = combineReducers({
   productDetails: productDetailsReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
+  productReview: productReviewReducer,
   cart: cartReducers,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
@@ -58,7 +59,7 @@ const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
   cart: {
     cartItems: cartItemsFromStorage,
-    shippingAddress: shippingAddressFromStorage
+    shippingAddress: shippingAddressFromStorage,
   },
 };
 

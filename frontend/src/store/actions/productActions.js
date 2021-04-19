@@ -1,14 +1,24 @@
 import {
+  PRODUCT_ADD_REVIEW_FAIL,
+  PRODUCT_ADD_REVIEW_REQUEST,
+  PRODUCT_ADD_REVIEW_SUCCESS,
   PRODUCT_CREATE_FAIL,
-  PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
-  PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
-  PRODUCT_LIST_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_LIST_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS, REVIEW_DELETE_FAIL,
+  REVIEW_DELETE_REQUEST,
+  REVIEW_DELETE_SUCCESS,
 } from '../constants/productConstants';
 import axiosApi from '../../axiosApi';
 import { push } from 'connected-react-router';
@@ -32,6 +42,14 @@ const productCreateFail = error => ({ type: PRODUCT_CREATE_FAIL, error });
 const productUpdateRequest = () => ({ type: PRODUCT_UPDATE_REQUEST });
 const productUpdateSuccess = product => ({ type: PRODUCT_UPDATE_SUCCESS, product });
 const productUpdateFail = error => ({ type: PRODUCT_UPDATE_FAIL, error });
+
+const productAddReviewRequest = () => ({ type: PRODUCT_ADD_REVIEW_REQUEST });
+const productAddReviewSuccess = () => ({ type: PRODUCT_ADD_REVIEW_SUCCESS });
+const productAddReviewFail = error => ({ type: PRODUCT_ADD_REVIEW_FAIL, error });
+
+const reviewDeleteRequest = () => ({ type: REVIEW_DELETE_REQUEST });
+const reviewDeleteSuccess = id => ({ type: REVIEW_DELETE_SUCCESS, id });
+const reviewDeleteFail = error => ({ type: REVIEW_DELETE_FAIL, error });
 
 export const getProductList = () => {
   return async dispatch => {
@@ -98,6 +116,34 @@ export const updateProduct = (product, id) => {
       dispatch(productUpdateSuccess(response.data));
     } catch (e) {
       dispatch(productUpdateFail(e.response && e.response.data.error
+        ? e.response.data.error
+        : e.message));
+    }
+  };
+};
+
+export const addProductReview = (review, id) => {
+  return async dispatch => {
+    dispatch(productAddReviewRequest());
+    try {
+      const response = await axiosApi.post(`/products/${id}/reviews`, review);
+      dispatch(productAddReviewSuccess(response.data));
+    } catch (e) {
+      dispatch(productAddReviewFail(e.response && e.response.data.error
+        ? e.response.data.error
+        : e.message));
+    }
+  };
+};
+
+export const deleteReview = (id, reviewId) => {
+  return async dispatch => {
+    dispatch(reviewDeleteRequest());
+    try {
+      await axiosApi.delete(`/products/${id}/reviews?review=${reviewId}`);
+      dispatch(reviewDeleteSuccess());
+    } catch (e) {
+      dispatch(reviewDeleteFail(e.response && e.response.data.error
         ? e.response.data.error
         : e.message));
     }
