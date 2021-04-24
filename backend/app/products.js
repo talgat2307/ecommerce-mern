@@ -5,8 +5,21 @@ const permit = require('../middlewares/permit');
 const upload = require('../middlewares/upload');
 
 router.get('/', async (req, res) => {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
   try {
-    const products = await Product.find();
+    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+    const count = await Product.countDocuments({ ...keyword });
+    const products = await Product.find({ ...keyword }).limit(limit).skip(limit * (page - 1)).exec();
+    res.send({ products, pages: Math.ceil(count / limit) });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+router.get('/top-rated', async (req, res) => {
+  try {
+    const products = await Product.find().sort({ rating: -1}).limit(4);
     res.send(products);
   } catch (e) {
     res.status(404).send(e);
@@ -104,12 +117,11 @@ router.delete('/:id', [auth, permit('admin')], async (req, res) => {
   }
 });
 
-
 router.delete('/:id/reviews', [auth, permit('user', 'admin')], async (req, res) => {
   try {
     let query;
     if (req.query.review) query = { review: req.query.review };
-    await Product.updateOne({ _id: req.params.id },{ '$pull': { 'reviews': { '_id': query.review } } });
+    await Product.updateOne({ _id: req.params.id }, { '$pull': { 'reviews': { '_id': query.review } } });
     res.send({ message: 'Review has been successfully deleted' });
   } catch (e) {
     res.status(400).send({ error: 'Product not found' });
