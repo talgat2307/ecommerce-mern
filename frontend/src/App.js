@@ -26,6 +26,7 @@ const App = () => {
       <Layout>
         <Switch>
           <Route path={'/'} exact component={Products}/>
+          <Route path={'/search/:keyword'} exact component={Products}/>
           <ProtectedRoute path={'/register'} component={Register} isAllowed={!user} redirectTo={'/'}/>
           <Route path={'/login'} component={Login}/>
           <Route path={'/product/:id'} component={ProductDetails}/>

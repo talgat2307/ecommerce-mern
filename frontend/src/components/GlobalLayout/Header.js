@@ -11,15 +11,17 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AccountCircle } from '@material-ui/icons';
 import { logout } from '../../store/actions/userActions';
+import SearchField from '../SearchField';
 
 const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     fontWeight: 'bold',
-    fontFamily: 'monospace',
   },
   appBar: {
-    marginBottom: 40,
+    color: 'black',
+    backgroundColor: 'white',
+    boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px;'
   },
   headerLink: {
     color: 'inherit',
@@ -61,12 +63,13 @@ const Header = () => {
   const classes = useStyles();
   return (
     <>
-      <AppBar position="static" color='primary' elevation={0} className={classes.appBar}>
+      <AppBar position="fixed" elevation={0} className={classes.appBar}>
         <Container>
           <Toolbar>
             <Typography variant="h4" className={classes.title}>
               <Link className={classes.headerLink} to={'/'}>eStore</Link>
             </Typography>
+            <SearchField />
             <Button
               className={classes.headerBtn}
               color="inherit"
