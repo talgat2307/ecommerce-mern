@@ -148,9 +148,9 @@ const ProductDetails = ({ match, history }) => {
     history.push(`/cart/${productId}?qty=${qty}`);
   };
 
-  const reviewDeleteHandler = (productId, reviewId) => {
+  const reviewDeleteHandler = (id, reviewId) => {
     if (userInfo) {
-      dispatch(deleteReview(productId, reviewId));
+      dispatch(deleteReview(id, reviewId));
       setOpen(true);
     }
   };
@@ -179,7 +179,7 @@ const ProductDetails = ({ match, history }) => {
   return (
     <>
       <Button variant="outlined" component={Link} to={'/'}>
-        Go Back
+        Go back to Main
       </Button>
       {loading ?
         <Loader open={loading}/>
@@ -272,7 +272,7 @@ const ProductDetails = ({ match, history }) => {
                     <Typography className={classes.comment} variant={'subtitle1'}>{review.comment}</Typography>
                     {userInfo && userInfo.role === 'user' && userInfo._id === review.user &&
                     <Button
-                      onClick={() => reviewDeleteHandler(productId, review._id)}
+                      onClick={() => reviewDeleteHandler(product._id, review._id)}
                       className={classes.deleteReview}
                       variant={'outlined'}
                       color={'secondary'}
@@ -281,7 +281,7 @@ const ProductDetails = ({ match, history }) => {
                     </Button>}
                     {userInfo && userInfo.role === 'admin' &&
                     <Button
-                      onClick={() => reviewDeleteHandler(productId, review._id)}
+                      onClick={() => reviewDeleteHandler(product._id, review._id)}
                       className={classes.deleteReview}
                       variant={'outlined'}
                       color={'secondary'}

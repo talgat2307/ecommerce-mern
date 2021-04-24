@@ -6,20 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
 import { getProfile, updateProfile } from '../store/actions/userActions';
 import Loader from '../components/Loader';
 import { USER_UPDATE_PROFILE_RESET } from '../store/constants/userConstants';
 import { getUserOrders } from '../store/actions/orderActions';
-import {
-  Box,
-  Table, TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { DataGrid } from '@material-ui/data-grid';
 
 const useStyles = makeStyles((theme) => ({
   gridCon: {
@@ -47,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
   tableCon: {
     marginTop: theme.spacing(4),
-    border: '1px solid #b8b8b8',
-    borderRadius: '5px',
   },
   table: {
     minWidth: 650,
@@ -72,7 +62,7 @@ const Profile = ({ history }) => {
 
   const { loading, error, user } = useSelector(state => state.userProfile);
   const { success } = useSelector(state => state.userUpdateProfile);
-  const { orders, loading: loadingOrders, error: errorOrders } = useSelector(state => state.orderList);
+  const { orders, loading: loadingOrders, error: errorOrders } = useSelector(state => state.orderListUser);
 
   useEffect(() => {
     if (!user || !user.name || success) {
@@ -90,7 +80,7 @@ const Profile = ({ history }) => {
   }, [dispatch, history, user, success]);
 
   useEffect(() => {
-    dispatch(getUserOrders('/profile'));
+    dispatch(getUserOrders());
   }, [dispatch]);
 
   const inputChangeHandler = (e) => {
@@ -114,9 +104,42 @@ const Profile = ({ history }) => {
       setTimeout(() => {
         setUpdated(false);
         setUpdateUser(prevState => ({ ...prevState, password: '' }));
-        setConfirmPassword('')}, 3000);
+        setConfirmPassword('');
+      }, 3000);
     }
   };
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'date', headerName: 'DATE', width: 130 },
+    { field: 'total', headerName: 'TOTAL', width: 130 },
+    { field: 'paid', headerName: 'PAID', width: 130 },
+    { field: 'delivered', headerName: 'DELIVERED', width: 130 },
+    {
+      field: 'details',
+      headerName: 'DETAILS',
+      width: 130,
+      renderCell: (params) => (
+        <>
+          <Button
+            variant={'outlined'} component={Link}
+            to={`/order/${params.row.orderId}`}
+          >
+            Details
+          </Button>
+        </>
+      ),
+    },
+  ];
+
+  const rows = orders.map((order, i) => ({
+    id: i + 1,
+    orderId: order._id,
+    date: order.createdAt.substring(0, 10),
+    total: '$' + order.totalPrice,
+    paid: order.isPaid ? order.paidAt.substring(0, 10) : 'X',
+    delivered: order.isDelivered ? order.deliveredAt.substring(0, 10) : 'X',
+  }));
 
   const classes = useStyles();
   return (
@@ -191,49 +214,25 @@ const Profile = ({ history }) => {
         <Typography component="h1" variant="h4">
           My Orders
         </Typography>
-        {loadingOrders ? <Loader open={loadingOrders}/> : errorOrders ? <Alert severity={'error'}>{errorOrders}</Alert>
+        {loadingOrders ? <Loader open={loadingOrders}/>
           :
-          <>
-            <TableContainer component={Box} className={classes.tableCon}>
-              {orders && orders.length === 0 ? <Alert severity={'info'}>No orders</Alert>
-                :
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell align="right">DATE</TableCell>
-                      <TableCell align="right">TOTAL</TableCell>
-                      <TableCell align="right">PAID</TableCell>
-                      <TableCell align="right">DELIVERED</TableCell>
-                      <TableCell align="right"/>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {orders && orders.map((order) => (
-                      <TableRow key={order._id}>
-                        <TableCell component="th" scope="row">{order._id}</TableCell>
-                        <TableCell align="right">{order.createdAt.substring(0, 10)}</TableCell>
-                        <TableCell align="right">${order.totalPrice}</TableCell>
-                        <TableCell align="right">
-                          {order.isPaid ? order.paidAt.substring(0, 10) : <CloseIcon/>}
-                        </TableCell>
-                        <TableCell align="right">
-                          {order.isDelivered ? order.isDelivered.substring(0, 10) : <CloseIcon/>}
-                        </TableCell>
-                        <TableCell align='right'>
-                          <Button
-                            variant={'outlined'} component={Link}
-                            to={`/order/${order._id}`}
-                          >
-                            Details
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>}
-            </TableContainer>
-          </>}
+          errorOrders ? <Alert severity={'error'}>{errorOrders}</Alert>
+            :
+            (orders && orders.length === 0) ? <Alert className={classes.alert} severity={'info'}>No orders added
+                yet</Alert>
+              :
+              <>
+                <DataGrid
+                  className={classes.tableCon}
+                  pageSize={8}
+                  autoHeight
+                  rows={rows}
+                  columns={columns.map(column => ({
+                    ...column,
+                    disableClickEventBubbling: true,
+                  }))}
+                />
+              </>}
       </Grid>
     </Grid>
   );

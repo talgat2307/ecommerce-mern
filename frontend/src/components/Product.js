@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     marginBottom: theme.spacing(3),
     paddingBottom: '5px',
-    boxShadow: 'rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
+    boxShadow: 'rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;',
     borderRadius: '8px',
     '&:hover': {
       boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;'
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     paddingBottom: theme.spacing(2),
-    height: '230px',
     borderRadius: '5px',
     cursor: 'pointer',
   },
@@ -48,6 +47,12 @@ const useStyles = makeStyles((theme) => ({
       color: '#054fda',
     },
   },
+  cartIcon: {
+    '&:hover': {
+      backgroundColor: '#343a40',
+      color: '#ffffff',
+    }
+  }
 }));
 
 const Product = ({ product, onClick }) => {
@@ -82,7 +87,7 @@ const Product = ({ product, onClick }) => {
           {product.countInStock === 0 ?
             <Button disabled variant={'outlined'}>Out of stock</Button>
             :
-            <Button component={Link} to={`/cart/${product._id}?qty=${1}`} variant={'outlined'}>
+            <Button className={classes.cartIcon} component={Link} to={`/cart/${product._id}?qty=${1}`} variant={'outlined'}>
               <AddShoppingCartIcon/>
             </Button>
           }

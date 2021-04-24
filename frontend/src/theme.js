@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#1b4965',
+      main: '#03071e',
     },
     secondary: {
       main: '#dc004e',
@@ -16,7 +16,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        textTransform: 'none',
+
       }
     }
   },
