@@ -71,6 +71,67 @@ const products = [
     rating: 4,
     numReviews: 12,
   },
-]
+  {
+    name: 'Apple Watch Series 6',
+    image: '/images/appleWatchDarkBlue.jpeg',
+    description:
+      'The aluminum case is lightweight and made from 100 percent recycled aerospace-grade alloy. The Sport Band is' +
+      ' made from a durable yet surprisingly soft high-performance fluoroelastomer with an innovative pin-and-tuck closure.',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 399,
+    countInStock: 10,
+    rating: 5,
+    numReviews: 3,
+  },
+  {
+    name: 'Apple Watch Series 6 Gold',
+    image: '/images/appleWatchGold.jpeg',
+    description:
+      'The aluminum case is lightweight and made from 100 percent recycled aerospace-grade alloy. The Sport Band is' +
+      ' made from a durable yet surprisingly soft high-performance fluoroelastomer with an innovative pin-and-tuck closure.',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 399,
+    countInStock: 5,
+    rating: 4,
+    numReviews: 5,
+  },
+  {
+    name: 'Macbook Pro 13 M1',
+    image: '/images/macbookpro13.jpeg',
+    description:
+      'Apple M1 chip with 8-core CPU, 8-core GPU, and 16-core Neural Engine',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 1299,
+    countInStock: 5,
+    rating: 4,
+    numReviews: 5,
+  },
+  {
+    name: 'Macbook Pro 16 Intel',
+    image: '/images/macbookpro16.jpeg',
+    description:
+      '2.6GHz 6-core 9th-generation Intel Core i7 processor',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 2399,
+    countInStock: 5,
+    rating: 7,
+    numReviews: 4,
+  },{
+    name: 'iPad Pro',
+    image: '/images/ipadpro.jpeg',
+    description:
+      'The ultimate iPad experience. Now with breakthrough M1 performance, a breathtaking XDR display, and blazing‑fast 5G wireless. Buckle up.',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 799,
+    countInStock: 5,
+    rating: 4,
+    numReviews: 4,
+  },
+];
 
 module.exports = products;
