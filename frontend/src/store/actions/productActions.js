@@ -16,7 +16,7 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
-  PRODUCT_UPDATE_SUCCESS, REVIEW_DELETE_FAIL,
+  PRODUCT_UPDATE_SUCCESS, RATED_PRODUCT_FAIL, RATED_PRODUCT_REQUEST, RATED_PRODUCT_SUCCESS, REVIEW_DELETE_FAIL,
   REVIEW_DELETE_REQUEST,
   REVIEW_DELETE_SUCCESS,
 } from '../constants/productConstants';
@@ -24,8 +24,12 @@ import axiosApi from '../../axiosApi';
 import { push } from 'connected-react-router';
 
 const productListRequest = () => ({ type: PRODUCT_LIST_REQUEST });
-const productListSuccess = products => ({ type: PRODUCT_LIST_SUCCESS, products });
+const productListSuccess = productData => ({ type: PRODUCT_LIST_SUCCESS, productData });
 const productListFail = error => ({ type: PRODUCT_LIST_FAIL, error });
+
+const ratedProductRequest = () => ({ type: RATED_PRODUCT_REQUEST });
+const ratedProductSuccess = products => ({ type: RATED_PRODUCT_SUCCESS, products });
+const ratedProductFail = error => ({ type: RATED_PRODUCT_FAIL, error });
 
 const productDetailsRequest = () => ({ type: PRODUCT_DETAILS_REQUEST });
 const productDetailsSuccess = product => ({ type: PRODUCT_DETAILS_SUCCESS, product });
@@ -48,19 +52,33 @@ const productAddReviewSuccess = () => ({ type: PRODUCT_ADD_REVIEW_SUCCESS });
 const productAddReviewFail = error => ({ type: PRODUCT_ADD_REVIEW_FAIL, error });
 
 const reviewDeleteRequest = () => ({ type: REVIEW_DELETE_REQUEST });
-const reviewDeleteSuccess = id => ({ type: REVIEW_DELETE_SUCCESS, id });
+const reviewDeleteSuccess = (reviewId) => ({ type: REVIEW_DELETE_SUCCESS, reviewId });
 const reviewDeleteFail = error => ({ type: REVIEW_DELETE_FAIL, error });
 
-export const getProductList = () => {
+export const getProductList = (keyword = '', page, limit) => {
   return async dispatch => {
     dispatch(productListRequest());
     try {
-      const response = await axiosApi('/products');
+      const response = await axiosApi(`/products?keyword=${keyword}&page=${page}&limit=${limit}`);
       dispatch(productListSuccess(response.data));
     } catch (e) {
       dispatch(productListFail(e.response && e.response.data.error
         ? e.response.data.error
         : e.message));
+    }
+  };
+};
+
+export const getTopRatedProducts = () => {
+  return async dispatch => {
+    dispatch(ratedProductRequest());
+    try {
+      const response = await axiosApi('/products/top-rated');
+      dispatch(ratedProductSuccess(response.data));
+    } catch (e) {
+      dispatch(dispatch(ratedProductFail(e.response && e.response.data.error
+        ? e.response.data.error
+        : e.message)));
     }
   };
 };
@@ -141,7 +159,7 @@ export const deleteReview = (id, reviewId) => {
     dispatch(reviewDeleteRequest());
     try {
       await axiosApi.delete(`/products/${id}/reviews?review=${reviewId}`);
-      dispatch(reviewDeleteSuccess());
+      dispatch(reviewDeleteSuccess(reviewId));
     } catch (e) {
       dispatch(reviewDeleteFail(e.response && e.response.data.error
         ? e.response.data.error
