@@ -93,7 +93,7 @@ export const deliverOrder = (orderId) => {
   return async dispatch => {
     dispatch(orderDeliverRequest());
     try {
-      const response = await axiosApi.put(`orders/${orderId}/deliver`);
+      const response = await axiosApi.put(`orders/${orderId}/delivered`);
       dispatch(orderDeliverSuccess(response.data));
     } catch (e) {
       dispatch(orderDeliverFail(e.response && e.response.data

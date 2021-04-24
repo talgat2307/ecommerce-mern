@@ -54,13 +54,15 @@ router.post('/', [auth], async (req, res) => {
   },
 );
 
-router.put('/:id/deliver', [auth, permit('admin')], async (req, res) => {
+router.put('/:id/delivered', [auth, permit('admin')], async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 
     if (order) {
       order.isDelivered = true;
+      order.isPaid = true;
       order.deliveredAt = Date.now();
+      order.paidAt = Date.now();
     }
 
     const updatedOrder = await order.save();

@@ -199,7 +199,7 @@ const Order = ({ match }) => {
                       fullWidth
                       disabled={order.isDelivered}
                     >
-                      Mark as Delivered
+                      Mark as Delivered and Paid
                     </Button>
                   </ListItem>}
                 </List>
