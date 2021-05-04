@@ -180,15 +180,15 @@ const Order = ({ match }) => {
                   </ListItem>
                   <ListItem className={classes.summaryLists}>
                     <Typography>Items</Typography>
-                    <Typography>${order.itemsPrice}</Typography>
+                    <Typography>${order.itemsPrice.toFixed(2)}</Typography>
                   </ListItem>
                   <ListItem className={classes.summaryLists}>
                     <Typography>Shipping</Typography>
-                    <Typography>${order.shippingPrice}</Typography>
+                    <Typography>${order.shippingPrice.toFixed(2)}</Typography>
                   </ListItem>
                   <ListItem className={classes.summaryLists}>
                     <Typography>Total</Typography>
-                    <Typography>${order.totalPrice}</Typography>
+                    <Typography>${order.totalPrice.toFixed(2)}</Typography>
                   </ListItem>
                   {userInfo && userInfo.role === 'admin' &&
                   <ListItem>
