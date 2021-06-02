@@ -1,4 +1,4 @@
-## E-Commerce app on MERN stack with following features:
+## Fully functional E-Commerce app https://estorekg.herokuapp.com/ on MERN stack with following features:
 
 - Authentication & Authorization
 - Full featured shopping cart
