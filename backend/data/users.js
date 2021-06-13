@@ -22,12 +22,6 @@ const users = [
     email: 'bob@gmail.com',
     password: bcrypt.hashSync('001', 10),
   },
-  {
-    name: 'Alex',
-    email: 'alex@gmail.com',
-    password: bcrypt.hashSync('001', 10)
-  },
-
 ];
 
 module.exports = users;
