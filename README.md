@@ -1,8 +1,25 @@
-### eCommerce app https://estorekg.herokuapp.com built with the MERN stack
+## Ecommerce platform
+
+Demo - https://estorekg.herokuapp.com
 
 ![](images/screenshot.png)
 
-### Features:
+### Stack:
+`Frontend`
+- React Js
+- Redux
+- Material UI
+- React Router
+- Axios
+
+`Backend`
+- Node Js
+- Express
+- MongoDB
+- Mongoose
+
+
+###Features:
 - Authentication & Authorization
 - Full featured shopping cart
 - Product reviews and ratings
