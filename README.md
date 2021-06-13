@@ -19,7 +19,7 @@ Demo - https://estorekg.herokuapp.com
 - Mongoose
 
 
-###Features:
+### Features:
 - Authentication & Authorization
 - Full featured shopping cart
 - Product reviews and ratings
