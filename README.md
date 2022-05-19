@@ -1,11 +1,5 @@
 ## Ecommerce platform
 
-Demo - https://estorekg.herokuapp.com
-
-Log in:
-- as User: `email` john@gmail.com `password` 001 
-- as Admin: `email` admin@gmail.com `password` 001
-
 ![](images/screenshot.png)
 
 ### Stack:
